@@ -92,7 +92,71 @@ higher order functions
 
 // greetArrow("hi")("hafiz")
 
-///////////////////
+//////////////////////CALL AND APPLY METHODS//////////////////////////
+const lufthansa={
+    airline:"Lufthansa",
+    iataCode:"LH",
+    bookings:[],
+    book(flightNum,name){
+        console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`);
+        this.bookings.push({flight:`${this.iataCode}${flightNum}`,name})
+    }
+}
+
+// lufthansa.book(239,"Iftikar");
+// lufthansa.book(452,"Rahul");
+// console.log(lufthansa.bookings);
 
 
+const euroWings={
+    airline:"EuroWings",
+    iataCode:"EW",
+    bookings:[]
+}
+
+
+/*
+->When we have created the book function by assigning it to a variable outside the object, then its no longer
+a method. Its rather a regular function call. Hence the this keyword has been assigned to undefined and hence we get an
+error
+->So in order to tell the function to what object should the this keyword point to, we use the call, apply or bind
+method
+*/ 
+const book=lufthansa.book;
+// book.call(euroWings,666,"Ramesh");   //here the this keyword has been set to euroWings object
+// book.call(lufthansa,999,"Iftikar")   //here the this keyword points to lufthansa object
+// console.log(euroWings.bookings);
+// console.log(lufthansa.bookings);
+
+
+// //apply Method->does not receive a list of arguments but instead uses an array->not that used in modern javascipt
+// const fd=[1001,"Papa"];
+// book.apply(euroWings,fd);
+
+// const fd2=[1002,"Mummy"];
+// book.call(euroWings,...fd2);
+
+////////////////BIND METHOD//////////////////
+/*
+->when we write book.bind(euroWings), it returns a new function whose this keyword points to the euroWings 
+obect.
+*/
+
+// const bookEW22=book.bind(euroWings,22); //making it more specific
+// const bookLH=book.bind(lufthansa);
+
+// bookEW22("Rahul");
+// bookEW22("Jaadooooo");
+// bookLH(111,"Dilhon");
+
+
+// Partial application
+const addTax=(rate,value)=>value+rate*value;
+// console.log(addTax(0.1,100));
+/*
+->Now if we want to create a more specific function in which the rate is fixed, we can use the bind method
+*/
+
+const addVat=addTax.bind(null,0.23);       //so here rate is now fixed to 0.23
+console.log(addVat(100));
 
