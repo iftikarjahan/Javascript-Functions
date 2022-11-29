@@ -93,26 +93,26 @@ higher order functions
 // greetArrow("hi")("hafiz")
 
 //////////////////////CALL AND APPLY METHODS//////////////////////////
-const lufthansa={
-    airline:"Lufthansa",
-    iataCode:"LH",
-    bookings:[],
-    book(flightNum,name){
-        console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`);
-        this.bookings.push({flight:`${this.iataCode}${flightNum}`,name})
-    }
-}
+// const lufthansa={
+//     airline:"Lufthansa",
+//     iataCode:"LH",
+//     bookings:[],
+//     book(flightNum,name){
+//         console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`);
+//         this.bookings.push({flight:`${this.iataCode}${flightNum}`,name})
+//     }
+// }
 
 // lufthansa.book(239,"Iftikar");
 // lufthansa.book(452,"Rahul");
 // console.log(lufthansa.bookings);
 
 
-const euroWings={
-    airline:"EuroWings",
-    iataCode:"EW",
-    bookings:[]
-}
+// const euroWings={
+//     airline:"EuroWings",
+//     iataCode:"EW",
+//     bookings:[]
+// }
 
 
 /*
@@ -122,7 +122,7 @@ error
 ->So in order to tell the function to what object should the this keyword point to, we use the call, apply or bind
 method
 */ 
-const book=lufthansa.book;
+// const book=lufthansa.book;
 // book.call(euroWings,666,"Ramesh");   //here the this keyword has been set to euroWings object
 // book.call(lufthansa,999,"Iftikar")   //here the this keyword points to lufthansa object
 // console.log(euroWings.bookings);
@@ -151,12 +151,101 @@ obect.
 
 
 // Partial application
-const addTax=(rate,value)=>value+rate*value;
+// const addTax=(rate,value)=>value+rate*value;
 // console.log(addTax(0.1,100));
 /*
 ->Now if we want to create a more specific function in which the rate is fixed, we can use the bind method
 */
 
-const addVat=addTax.bind(null,0.23);       //so here rate is now fixed to 0.23
-console.log(addVat(100));
+// const addVat=addTax.bind(null,0.23);       //so here rate is now fixed to 0.23
+// console.log(addVat(100));
+
+//////////////////////IIFE->Immediately Invoked Function Expression/////////////////////////////
+// Functions that are only executed once and never run again
+
+// (function(){
+//     console.log("This function will only be executed once");
+// })();
+
+/*
+->reason to use IIFE: Functions create scoope. So all data inside the function are private
+*/ 
+
+
+////////////////////CLOSURES//////////////////////////////////////////////
+/*
+->A closure is something that we dont have to explicitly use. It just simply happens in certain situations.
+We just need to recognise those situations
+
+->Note an important thing that any function has access to the variable environment in which the execution
+context was created
+->So even though the scope has already been destroyed, the scope chain is already preserved using the
+closure
+->The closure has priority over the scope chain. So even before looking at the scope chain, it would look at the 
+closure
+
+-> In other words, a closure gives a function access to all the variables of its parent function even though
+the parent function has returned. The function keeps a reference of its outer scope which preserves the 
+scope chain throughout
+
+->A closure can be reassigned as the variables are reassigned
+
+*/ 
+
+// const secureBooking=function(){
+//     let passengerCount=0;
+
+//     return function(){
+//         passengerCount++;
+//         console.log(`${passengerCount} passengers`);
+//     }
+// }
+
+// const booker=secureBooking();
+// booker();
+// booker();
+
+
+///////////////////Example2-closure///////////////////
+// let f;
+// let g=function(){
+//     const a=23;
+//     f=function(){
+//         console.log(a*2);
+//     }
+// }
+
+// g();
+// f();
+
+//////////////Example3-closure/////////////////
+
+const boardPassengers=function(n,wait){
+    const perGroup=n/3;
+
+    setTimeout(function(){
+        console.log(`We are now boarding all the ${n} passengers`);
+        console.log(`There are 3 groups each with ${perGroup} passengers`);
+    },wait*1000);    
+
+    console.log(`Will start boarding in ${wait} seconds`);
+}
+
+// boardPassengers(180,3);
+
+/////////////Example3-closure///////////////////////
+const exp=function(){
+    let a=10;
+    console.log("The EC for the exp function has been made and all its varibles are given values");;
+    console.log("The exp function has been called and is going to finish executing by putting all its variables in its EC");
+    console.log("Once it finishes executing, it would wipe itself out of the call stack");
+
+    setTimeout(function(){
+        console.log(`The value of a from the parent EC id ${a}`);
+        console.log(`Note that although the EC has been wiped out from the EC but still the value of  a i.e ${a} is still accessible because of closure where the variables and functions from the parent scope are still accessible`);
+    },30000);
+
+}
+
+exp();
 
